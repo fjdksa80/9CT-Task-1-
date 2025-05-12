@@ -22,6 +22,6 @@ while True:
         robot.drive(20, 0)
     robot.stop()
     colour_sensor_motor.run_angle(90, 90)
-    if colour_sensor.Color() == Colour.RED:
+    if colour_sensor.Color() == Colour.RED or Colour.YELLOW:
         ev3.speaker.beep()
     
