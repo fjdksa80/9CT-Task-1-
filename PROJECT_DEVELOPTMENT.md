@@ -61,6 +61,14 @@ I need to design a program for the EV3 MINDSTORM robot that will allow it to col
 - Accuracy - The robot should be accurate in it's detection and measurements using the sensors.
 
 ## Design
+
+### Mainline routine
+
+### Subroutine
+
+### Subroutine
+
+## Development and Integration
 ```Python
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
@@ -69,7 +77,7 @@ from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile 
+from pybricks.media.ev3dev import SoundFile, ImageFile
 
 # Variables
 ev3 = EV3Brick()
@@ -82,20 +90,19 @@ colour_sensor_motor = Motor(Port.A)
 
 # Main loop
 while True:
-    while ultrasonic_sensor > 30:
-        robot.drive(20, 0)
-    robot.stop()
-    colour_sensor_motor.run_angle(90, 90)
-    if colour_sensor.Color() == Colour.RED or Colour.YELLOW:
-        ev3.speaker.beep()
+    while colour_sensor.reflection() < 50 and ultrasonic_sensor.distance() > 50:
+        robot.drive()
+    if ultrasonic_sensor.distance() <= 50:
+        colour_sensor_motor.run_angle(-90)
+        if colour_sensor.Color() == Color.RED or Color.YELLOW:
+            ev3.speaker.beep()
+        else:
+            robot.straight(-50)
+            robot.turn(90)
+    if colour_sensor.reflection() >= 50:
+        robot.straight(-50)
+        robot.turn(90)
 ```
-### Mainline routine
-
-### Subroutine
-
-### Subroutine
-
-## Development and Integration
 
 
 ## Testing and Debugging

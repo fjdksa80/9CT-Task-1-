@@ -18,10 +18,16 @@ colour_sensor_motor = Motor(Port.A)
 
 # Main loop
 while True:
-    while ultrasonic_sensor > 30:
-        robot.drive(20, 0)
-    robot.stop()
-    colour_sensor_motor.run_angle(90, 90)
-    if colour_sensor.Color() == Colour.RED or Colour.YELLOW:
-        ev3.speaker.beep()
+    while colour_sensor.reflection() < 50 and ultrasonic_sensor.distance() > 50:
+        robot.drive()
+    if ultrasonic_sensor.distance() <= 50:
+        colour_sensor_motor.run_angle(-90)
+        if colour_sensor.Color() == Color.RED or Color.YELLOW:
+            ev3.speaker.beep()
+        else:
+            robot.straight(-50)
+            robot.turn(90)
+    if colour_sensor.reflection() >= 50:
+        robot.straight(-50)
+        robot.turn(90)
     
