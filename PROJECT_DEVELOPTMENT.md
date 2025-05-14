@@ -90,16 +90,16 @@ colour_sensor_motor = Motor(Port.A)
 
 # Main loop
 while True:
-    while colour_sensor.reflection() < 50 and ultrasonic_sensor.distance() > 50:
+    while colour_sensor.reflection() < 50 and ultrasonic_sensor.distance() > 50: # While loop that breaks when the robot detects the edge of the map or an obstacle.
         robot.drive()
-    if ultrasonic_sensor.distance() <= 50:
+    if ultrasonic_sensor.distance() <= 50: # Checks if there's an obstacle
         colour_sensor_motor.run_angle(-90)
         if colour_sensor.Color() == Color.RED or Color.YELLOW:
             ev3.speaker.beep()
         else:
             robot.straight(-50)
             robot.turn(90)
-    if colour_sensor.reflection() >= 50:
+    elif colour_sensor.reflection() >= 50: # Checks if the robot has reached the edge of the map, and then reverses and turns to avoid leaving the map.
         robot.straight(-50)
         robot.turn(90)
 ```
