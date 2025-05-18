@@ -18,22 +18,27 @@ colour_sensor_motor = Motor(Port.A)
 blocks_collected = 0
 
 # Functions
+def collect_block():
+    ev3.speaker.beep()
+    blocks_collected += 1
+
 def driving():
-    while colour_sensor.reflection() < 50 and ultrasonic_sensor.distance() > 50: # While loop that breaks when the robot detects the edge of the map or an obstacle.
+    while colour_sensor.reflection() > 50 and ultrasonic_sensor.distance() > 50: # Robot drives until it detects the edge of the map or an obstacle.
         robot.drive()
 
 def check_obstacles():
-    if ultrasonic_sensor.distance() <= 50: # Checks if there's an obstacle
+    if ultrasonic_sensor.distance() <= 50: # Checks if there's an obstacle.
         colour_sensor_motor.run_angle(-90)
-        if colour_sensor.Color() == Color.RED or Color.YELLOW:
+        if colour_sensor.Color() == Color.RED or Color.YELLOW: # Checks the colour of the obstacle, and collects the obstacle if it is yellow or red, avoiding it if it is not.
             ev3.screen.print("Block found!")
+            collect_block()
         else:
             ev3.screen.print("Wrong colour!")
             robot.straight(-50)
             robot.turn(90)
 
 def check_edge():
-    if colour_sensor.reflection() >= 50: # Checks if the robot has reached the edge of the map, and then reverses and turns to avoid leaving the map.
+    if colour_sensor.reflection() <= 50: # Checks if the robot has reached the edge of the map, and then reverses and turns to avoid leaving the map.
         robot.straight(-50)
         robot.turn(90)  
 
