@@ -63,10 +63,46 @@ I need to design a program for the EV3 MINDSTORM robot that will allow it to col
 ## Design
 
 ### Mainline routine
+```
+BEGIN
+    WHILE blocks_collected < 2
+        driving()
+        check_obstacles()
+        check_edge()
+    ENDWHILE
+END
+```
+![Mainline routine](./9CT_Mechatronics/images/main.png)
 
-### Subroutine
+### check_obstacles()
+```
+BEGIN
+    READ distance
+    IF distance <= 50
+        Rotate colour sensor 90 degrees
+        READ colour
+        IF colour == red or yellow
+            collect_block()
+        ELSE
+            Backwards 50 mm
+            Turn 90 degrees
+        ENDIF
+    ENDIF
+END
+```
+![check_obstacles()](./9CT_Mechatronics/images/check_obstacles().png)
 
-### Subroutine
+### check_edge()
+```
+BEGIN
+    READ reflection
+    IF reflection >= 50
+        Backwards 50 mm
+        Turn 90 degrees
+    ENDIF
+END
+```
+![check_edge()](./9CT_Mechatronics/images/check_edge().png)
 
 ## Development and Integration
 ```Python

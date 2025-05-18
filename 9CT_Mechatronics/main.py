@@ -15,8 +15,13 @@ robot = DriveBase(left_motor, right_motor, wheel_diameter=55.5, axle_track=104)
 colour_sensor = ColorSensor(Port.S3)
 ultrasonic_sensor = UltrasonicSensor(Port.S2)
 colour_sensor_motor = Motor(Port.A)
+blocks_collected = 0
 
 # Functions
+def driving():
+    while colour_sensor.reflection() < 50 and ultrasonic_sensor.distance() > 50: # While loop that breaks when the robot detects the edge of the map or an obstacle.
+        robot.drive()
+
 def check_obstacles():
     if ultrasonic_sensor.distance() <= 50: # Checks if there's an obstacle
         colour_sensor_motor.run_angle(-90)
@@ -33,8 +38,7 @@ def check_edge():
         robot.turn(90)  
 
 # Main loop
-while True:
-    while colour_sensor.reflection() < 50 and ultrasonic_sensor.distance() > 50: # While loop that breaks when the robot detects the edge of the map or an obstacle.
-        robot.drive()
+while blocks_collected < 2:
+    driving()
     check_obstacles()
     check_edge()
